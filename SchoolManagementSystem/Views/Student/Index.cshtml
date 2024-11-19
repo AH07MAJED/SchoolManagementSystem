@@ -1,0 +1,59 @@
+﻿@model IEnumerable<SchoolManagementSystem.Models.Student>
+
+@{
+    ViewData["Title"] = "Index";
+
+    // Session data ko access karne ke liye ViewContext.HttpContext ka use
+    var totalStudents = ViewContext.HttpContext.Session.GetInt32("TotalStudents");
+}
+
+<h1>Index</h1>
+
+<!-- Session ka data dikhana -->
+<p>Total Students: @totalStudents</p>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.StudentName)</th>
+            <th>@Html.DisplayNameFor(model => model.Age)</th>
+            <th>@Html.DisplayNameFor(model => model.standard)</th>
+            <th>@Html.DisplayNameFor(model => model.Contact)</th>
+            <th>@Html.DisplayNameFor(model => model.IsActive)</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.StudentName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Age)</td>
+                <td>@Html.DisplayFor(modelItem => item.standard)</td>
+                <td>@Html.DisplayFor(modelItem => item.Contact)</td>
+                <td>
+                    @if (item.IsActive)
+                    {
+                        <span class="badge border border-success text-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge border border-danger text-danger">Inactive</span>
+                    }
+                </td>
+                <td>
+                    <a class="btn btn-outline-info btn-sm" href="@Url.Action("Edit", "Student", new { id = item.Id })">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <a class="btn btn-outline-danger btn-sm" href="@Url.Action("Delete", "Student", new { id = item.Id })" onclick="return confirm('wants to delete?')">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
